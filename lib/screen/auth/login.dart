@@ -334,6 +334,9 @@ class _LogInState extends State<LogIn> {
           Navigator.pushNamedAndRemoveUntil(
               context, "HomeLayout", (route) => false,
               arguments: session);
+        } else if (dataState is ErrorSessionState) {
+          print(dataState.errorSession.statuesCode);
+          print(dataState.errorSession.errors);
         }
       }
     });

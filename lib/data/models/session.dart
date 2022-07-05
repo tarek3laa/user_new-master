@@ -1,6 +1,18 @@
 import 'package:user_new/data/models/user.dart';
 
-class Session {
+abstract class SessionData {}
+
+class ErrorSession extends SessionData {
+  int statuesCode;
+  dynamic errors;
+
+  ErrorSession(this.statuesCode, this.errors);
+
+  factory ErrorSession.fromJson(json) => ErrorSession(json['errorCode'],json['errors']);
+}
+
+
+class Session extends SessionData {
   String token;
   User? user;
 
@@ -8,6 +20,5 @@ class Session {
 
   factory Session.fromJson(Map<String, dynamic> json) =>
       Session(json['token'], User.fromJson(json['user']));
-
 
 }

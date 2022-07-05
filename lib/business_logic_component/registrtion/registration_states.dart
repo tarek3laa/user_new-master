@@ -4,16 +4,29 @@ part of '../registrtion/registration_cubit.dart';
 abstract class RegistrationState {}
 
 class InitialSession extends RegistrationState {}
+
 class SessionLoaded extends RegistrationState {
   final Session session;
+
   SessionLoaded(this.session);
 }
+
+class ErrorSessionState extends RegistrationState {
+  final ErrorSession errorSession;
+
+  ErrorSessionState(this.errorSession);
+}
+
 class CodeSent extends RegistrationState {}
+
 class Error extends RegistrationState {}
+
 class CodeSendingIssue extends Error {}
+
 class CodeConfirmationIssue extends Error {
   final int statuesCode;
+
   CodeConfirmationIssue(this.statuesCode);
 }
-class CodeConfirmed extends RegistrationState {}
 
+class CodeConfirmed extends RegistrationState {}

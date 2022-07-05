@@ -18,9 +18,11 @@ class RegistrationCubit extends Cubit<RegistrationState> {
 
   factory RegistrationCubit() => _instance;
 
-  void signUp(User user) => _registrationRepository
-      .signUp(user)
-      .then((value) => emit(SessionLoaded(value)));
+  void signUp(User user) => _registrationRepository.signUp(user).then((value) {
+        if (value is Session)
+          emit(SessionLoaded(value));
+        else if (value is ErrorSession) emit(ErrorSessionState(value));
+      });
 
   void sendCodeToUserPhone(String phone, countryCode) => _registrationRepository
       .sendCodeToUserPhone(phone, countryCode)
@@ -32,7 +34,9 @@ class RegistrationCubit extends Cubit<RegistrationState> {
               ? emit(CodeConfirmed())
               : emit(CodeConfirmationIssue(value)));
 
-  void signIn(User user) => _registrationRepository
-      .signIn(user)
-      .then((value) => emit(SessionLoaded(value)));
+  void signIn(User user) => _registrationRepository.signIn(user).then((value) {
+        if (value is Session)
+          emit(SessionLoaded(value));
+        else if (value is ErrorSession) emit(ErrorSessionState(value));
+      });
 }

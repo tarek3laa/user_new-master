@@ -10,7 +10,6 @@ import 'package:user_new/componnet/componnetAuth.dart';
 import 'package:user_new/constants/color.dart';
 import 'package:user_new/data/models/session.dart';
 
-import '../../data/models/user.dart';
 
 class Otp_Next_SignUp extends StatefulWidget {
   final user;
@@ -42,6 +41,9 @@ class _Otp_Next_SignUpState extends State<Otp_Next_SignUp> {
               Navigator.pushReplacementNamed(context, "Select_your_location",
                   arguments: session);
             }
+          } else if (dataState is ErrorSessionState) {
+            print(dataState.errorSession.statuesCode);
+            print(dataState.errorSession.errors);
           }
         }
       },

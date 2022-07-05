@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
+
 
 import '../../constants/strings.dart';
 import '../models/user.dart';
 
 class RegistrationOperations {
   var headers = {'Accept-Language': 'en'};
-  var dio;
+  late Dio dio;
   static final RegistrationOperations _instance = RegistrationOperations._();
 
   RegistrationOperations._() {
@@ -15,17 +15,28 @@ class RegistrationOperations {
 
   factory RegistrationOperations() => _instance;
 
-  Future<Map<String, dynamic>> signUp(User user) async {
+  Future<Response<dynamic>> signUp(User user) async {
     var formData = FormData.fromMap(user.signUpJson());
-    Response<dynamic> response =
-        await dio.post(baseUrl + 'signup', data: formData);
-    return response.data;
+    Response<dynamic> response;
+    try {
+      response = await dio.post(baseUrl + 'signup', data: formData);
+    } on DioError catch (e) {
+      response = e.response!;
+    }
+
+    return response;
   }
 
-  Future<Map<String, dynamic>> signIn(User user) async {
+  Future<Response<dynamic>> signIn(User user) async {
     var data = user.signInJson();
-    Response<dynamic> response = await dio.post(baseUrl + 'signin', data: data);
-    return response.data;
+
+    Response<dynamic> response;
+    try {
+      response = await dio.post(baseUrl + 'signin', data: data);
+    } on DioError catch (e) {
+      response = e.response!;
+    }
+    return response;
   }
 
   Future<int?> sendCodeToUserPhone(String phone, countryKey) async {

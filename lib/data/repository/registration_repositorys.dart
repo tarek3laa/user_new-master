@@ -1,3 +1,4 @@
+
 import '../web_services/registrations.dart';
 import '../models/user.dart';
 import '../models/session.dart';
@@ -12,18 +13,20 @@ class RegistrationRepository {
     _registrationOperations = RegistrationOperations();
   }
 
-  Future<Session> signUp(User user) async {
-    var userData = await _registrationOperations.signUp(user);
-    return Session.fromJson(userData);
+  Future<SessionData> signUp(User user) async {
+    var response = await _registrationOperations.signUp(user);
+    if (response.statusCode == 200)
+      return Session.fromJson(response.data);
+    else
+      return ErrorSession.fromJson(response.data);
   }
 
-  Future<Session> signIn(User user) async {
-    var userData = await _registrationOperations.signIn(user);
-    Session session;
-
-    session = Session.fromJson(userData);
-
-    return session;
+  Future<SessionData> signIn(User user) async {
+    var response = await _registrationOperations.signIn(user);
+    if (response.statusCode == 200)
+      return Session.fromJson(response.data);
+    else
+      return ErrorSession.fromJson(response.data);
   }
 
   Future<bool> sendCodeToUserPhone(String phone, countryKey) async {
