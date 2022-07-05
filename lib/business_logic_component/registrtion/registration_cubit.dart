@@ -6,32 +6,33 @@ import '../../data/models/session.dart';
 import '../../data/models/user.dart';
 import '../../data/repository/registration_repositorys.dart';
 
-part  '../registrtion/registration_states.dart';
+part '../registrtion/registration_states.dart';
 
 class RegistrationCubit extends Cubit<RegistrationState> {
-  final RegistrationRepository registrationRepository;
+  late final RegistrationRepository _registrationRepository;
+  static final RegistrationCubit _instance = RegistrationCubit._();
 
-  RegistrationCubit(this.registrationRepository) : super(InitialSession());
+  RegistrationCubit._() : super(InitialSession()) {
+    _registrationRepository = RegistrationRepository();
+  }
 
-  void signUp(User user) => registrationRepository
+  factory RegistrationCubit() => _instance;
+
+  void signUp(User user) => _registrationRepository
       .signUp(user)
       .then((value) => emit(SessionLoaded(value)));
 
-  void sendCodeToUserPhone(String phone, countryCode) => registrationRepository
+  void sendCodeToUserPhone(String phone, countryCode) => _registrationRepository
       .sendCodeToUserPhone(phone, countryCode)
       .then((value) => (value) ? emit(CodeSent()) : emit(CodeSendingIssue()));
 
   void codeConfirmation(String phone, String countryKey, String code) =>
-      registrationRepository.confirmCode(phone, countryKey, code).then(
+      _registrationRepository.confirmCode(phone, countryKey, code).then(
           (value) => (value == 200)
               ? emit(CodeConfirmed())
               : emit(CodeConfirmationIssue(value)));
 
-  void signIn(User user) => registrationRepository
+  void signIn(User user) => _registrationRepository
       .signIn(user)
       .then((value) => emit(SessionLoaded(value)));
-
-
-
-
 }

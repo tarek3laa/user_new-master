@@ -108,16 +108,3 @@ defaultContainer({
         borderRadius: BorderRadius.circular(0.0),
       ),
     );
-
-countryPicker(List<Country> countries) {
-  return DropdownButton<Country>(
-      items: countries.map(dropdownMenuBuilder).toList(),
-      onChanged: (value) => {});
-}
-
-DropdownMenuItem<Country> dropdownMenuBuilder(Country item) => DropdownMenuItem(
-      value: item,
-      child: Row(
-        children: [Image.network(item.logo), Text(item.countryCode)],
-      ),
-    );

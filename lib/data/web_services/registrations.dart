@@ -7,10 +7,13 @@ import '../models/user.dart';
 class RegistrationOperations {
   var headers = {'Accept-Language': 'en'};
   var dio;
+  static final RegistrationOperations _instance = RegistrationOperations._();
 
-  RegistrationOperations() {
+  RegistrationOperations._() {
     dio = Dio();
   }
+
+  factory RegistrationOperations() => _instance;
 
   Future<Map<String, dynamic>> signUp(User user) async {
     var formData = FormData.fromMap(user.signUpJson());
@@ -21,7 +24,7 @@ class RegistrationOperations {
 
   Future<Map<String, dynamic>> signIn(User user) async {
     var data = user.signInJson();
-    Response<dynamic> response = await dio.post(baseUrl + 'signin', data);
+    Response<dynamic> response = await dio.post(baseUrl + 'signin', data: data);
     return response.data;
   }
 
@@ -35,7 +38,7 @@ class RegistrationOperations {
   Future<int?> confirmCode(phone, countryKey, code) async {
     var data = {'phone': phone, 'country': countryKey, 'code': code};
     Response<dynamic> response =
-        await dio.put(baseUrl + 'confirmPhoneCode', data);
+        await dio.put(baseUrl + 'confirmPhoneCode', data: data);
     return response.statusCode;
   }
 }

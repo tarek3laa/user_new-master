@@ -1,1 +1,1 @@
-const baseUrl = 'https://www.wingesadmin.com/fixo-Backend/';
+const baseUrl = 'https://www.liurvo.com/fixo-Backend/';

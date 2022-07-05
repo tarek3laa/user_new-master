@@ -16,4 +16,4 @@ class CodeConfirmationIssue extends Error {
   CodeConfirmationIssue(this.statuesCode);
 }
 class CodeConfirmed extends RegistrationState {}
-class PhoneConfirmed extends RegistrationState {}
+

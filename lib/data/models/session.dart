@@ -2,7 +2,7 @@ import 'package:user_new/data/models/user.dart';
 
 class Session {
   String token;
-  User user;
+  User? user;
 
   Session(this.token, this.user);
 

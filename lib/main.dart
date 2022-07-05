@@ -16,6 +16,7 @@ import 'package:user_new/screen/auth/otp_Screen_Next_SignUp.dart';
 import 'package:user_new/screen/auth/signUp.dart';
 import 'package:user_new/screen/homeLayout.dart';
 import 'package:user_new/screen/locationDetails.dart';
+import 'package:user_new/screen/router.dart';
 
 import 'bloc/cubit.dart';
 import 'bloc/state.dart';
@@ -30,17 +31,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RegistrationOperations registrationOperations = RegistrationOperations();
-    RegistrationRepository registrationRepository =
-        RegistrationRepository(registrationOperations);
-    RegistrationCubit registrationCubit =
-        RegistrationCubit(registrationRepository);
+    RegistrationCubit registrationCubit = RegistrationCubit();
 
     return MultiBlocProvider(
         providers: [
           BlocProvider<AppCubit>(
             create: (BuildContext context) =>
-                AppCubit(CountryCubit(CountryRepository(CountryWebServices()))),
+                AppCubit(CountryCubit(), registrationCubit),
           ),
           BlocProvider<RegistrationCubit>(
               create: (BuildContext context) => registrationCubit),
@@ -48,19 +45,8 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(fontFamily: "Dubai-Medium"),
-          routes: {
-            "signUp": (context) => SignUp(),
-            "loginScreen": (context) => LogIn(),
-            "forgetPasswordSendEmail": (context) => ForgetPasswordSendEmail(),
-            "forgetPassword_otb": (context) => ForgetPassword_otb(),
-            "forgetPasswordEnterNewPassword": (context) =>
-                ForgetPasswordEnterNewPassword(),
-            "Otp_Next_SignUp": (context) => Otp_Next_SignUp(),
-            "Select_your_location": (context) => Select_your_location(),
-            "LocationDetails": (context) => LocationDetails(),
-            "HomeLayout": (context) => HomeLayout(),
-          },
-          home: FirstScreen(),
+          onGenerateRoute: RouteGenerator.onGenerateRoute,
+          initialRoute: '/',
         ));
   }
 }

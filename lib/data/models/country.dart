@@ -9,24 +9,24 @@ class Country {
 
   String countryCode;
   String countryKey;
-  Pair name;
-  Pair currency;
+  String name;
+  String currency;
   int id;
   String logo;
 
   factory Country.fromJson(Map<String, dynamic> json) => Country(
       countryCode: json["countryCode"],
       countryKey: json["countryKey"],
-      name: Pair.fromJson(json["name"]),
-      currency: Pair.fromJson(json["currency"]),
+      name: json["name"],
+      currency: json["currency"],
       id: json["id"],
-      logo: json['logo']);
+      logo: (json['logo'] != null) ? json['logo'] : '');
 
   Map<String, dynamic> toJson() => {
         "countryCode": countryCode,
         "countryKey": countryKey,
-        "name": name.toJson(),
-        "currency": currency.toJson(),
+        "name": name,
+        "currency": currency,
         "id": id,
       };
 }

@@ -21,10 +21,10 @@ class User {
       this.userState,
       this.appRateDate,
       required this.type,
-      required this.username,
-      required this.email,
+      this.username,
+      this.email,
       required this.phone,
-      required this.country,
+      this.country,
       this.shareCode,
       this.createdAt,
       this.updatedAt,
@@ -49,10 +49,10 @@ class User {
   String? userState;
   DateTime? appRateDate;
   String type;
-  String username;
-  String email;
+  String? username;
+  String? email;
   String phone;
-  Country country;
+  int? country;
   String? shareCode;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -81,7 +81,8 @@ class User {
       username: json["username"],
       email: json["email"],
       phone: json["phone"],
-      country: Country.fromJson(json["country"]),
+      country:
+          (json["country"] is int) ? json['country'] : json['country']['id'],
       shareCode: json["shareCode"],
       createdAt: DateTime.parse(json["createdAt"]),
       updatedAt: DateTime.parse(json["updatedAt"]),
@@ -110,7 +111,7 @@ class User {
         "username": username,
         "email": email,
         "phone": phone,
-        "country": country.toJson(),
+        "country": country,
         "shareCode": shareCode,
         "createdAt": createdAt!.toIso8601String(),
         "updatedAt": updatedAt!.toIso8601String(),
@@ -118,11 +119,11 @@ class User {
       };
 
   Map<String, String> signUpJson() => {
-        "username": username,
-        "email": email,
+        "username": username!,
+        "email": email!,
         "phone": phone,
         "password": password!,
-        "country": country.countryKey,
+        "country": (country!).toString(),
         "type": type
       };
 
@@ -130,6 +131,6 @@ class User {
         "phone": phone,
         "password": password!,
         "type": type,
-        "country": country.countryKey,
+        "country": (country!).toString(),
       };
 }

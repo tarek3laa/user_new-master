@@ -8,16 +8,20 @@ import '../../data/models/city.dart';
 part 'country_state.dart';
 
 class CountryCubit extends Cubit<CountryState> {
-  final CountryRepository countryRepository;
+  late final CountryRepository _countryRepository;
+  static CountryCubit _instance = CountryCubit._();
 
-  CountryCubit(this.countryRepository) : super(CountryInitial());
+  CountryCubit._() : super(CountryInitial()) {
+    _countryRepository = CountryRepository();
+  }
 
-  void getAllCountries() => countryRepository
+  factory CountryCubit() => _instance;
+
+  void getAllCountries() => _countryRepository
       .getAllCountries()
       .then((value) => emit(CountryLoaded(value)));
 
-  void getAllCities() => countryRepository
+  void getAllCities() => _countryRepository
       .getAllCities()
       .then((value) => emit(CityLoaded(value)));
-
 }

@@ -29,15 +29,18 @@ class _SignUpState extends State<SignUp> {
 
   var email = TextEditingController();
 
-  var country = TextEditingController();
   List<Country> countries = [];
+  CountryCubit countryCubit = CountryCubit();
+
+  @override
+  void initState() {
+    countryCubit.getAllCountries();
+  }
 
   @override
   Widget build(BuildContext context) {
-    print('hi');
     return BlocConsumer<AppCubit, AppState>(builder: (context, state) {
       AppCubit cubit = BlocProvider.of(context);
-      cubit.countryCubit.getAllCountries();
       double width = MediaQuery.of(context).size.width;
       GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -46,10 +49,14 @@ class _SignUpState extends State<SignUp> {
         bottomNavigationBar: InkWell(
           onTap: () {
             if (formKey.currentState!.validate()) {
-              Navigator.pushNamed(
-                context,
-                "Otp_Next_SignUp",
-              );
+              User user = User(
+                  type: 'CLIENT',
+                  username: userName.text,
+                  email: email.text,
+                  phone: phone.text,
+                  password: password.text,
+                  country: 1);
+              Navigator.pushNamed(context, "Otp_Next_SignUp", arguments: user);
             }
           },
           child: defaultContainer(text: "متابعة", context: context),
@@ -112,7 +119,6 @@ class _SignUpState extends State<SignUp> {
                           labelStar: "*",
                           hint: "ادخل رقم الجوال",
                           textInputType: TextInputType.number,
-                          suffix: countryPicker([]),
                           textEditingController: phone,
                           validator: (String? value) {
                             if (value!.isEmpty) {
@@ -259,7 +265,6 @@ class _SignUpState extends State<SignUp> {
       if (state is DataStateChanged) {
         var dataState = state.state;
         if (dataState is CountryLoaded) countries = dataState.countries;
-        print(countries[0].countryKey);
       }
     });
   }
