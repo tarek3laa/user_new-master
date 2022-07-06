@@ -1,12 +1,12 @@
-class Slider {
+class HomePageSlider {
   String image;
   String type;
   int id;
   dynamic value;
 
-  Slider(this.image, this.type, this.id, this.value);
+  HomePageSlider(this.image, this.type, this.id, this.value);
 
-  factory Slider.fromJson(Map<String, dynamic> json) {
+  factory HomePageSlider.fromJson(Map<String, dynamic> json) {
     dynamic value = null;
     switch (json['type']) {
       case 'FORM':
@@ -19,6 +19,6 @@ class Slider {
         value = json['sale'];
         break;
     }
-    return Slider(json['image'], json['type'], json['id'], value);
+    return HomePageSlider(json['image'], json['type'], json['id'], value);
   }
 }

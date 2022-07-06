@@ -15,9 +15,12 @@ import '../../data/repository/home_page.dart';
 part 'home_page_state.dart';
 
 class HomePageCubit extends Cubit<HomePageState> {
-  final HomePageRepository homePageRepository;
+  final HomePageRepository homePageRepository = HomePageRepository();
+  static final HomePageCubit _instance = HomePageCubit._();
 
-  HomePageCubit(this.homePageRepository) : super(HomePageInitial());
+  HomePageCubit._() : super(HomePageInitial());
+
+  factory HomePageCubit() => _instance;
 
   void getAllSliders() => homePageRepository
       .getAllSliders()
@@ -65,10 +68,10 @@ class HomePageCubit extends Cubit<HomePageState> {
       .then((value) => emit(QuestionLoaded(value)));
 
   void createOrder(List<Answer> answers, List<ProblemType> problemType,
-          Location location, mainServiceNumber, description, images) =>
+          Location location, mainServiceNumber, description, images, token) =>
       homePageRepository
           .createOrder(answers, problemType, location, mainServiceNumber,
-              description, images)
+              description, images, token)
           .then((value) => emit(OrderCreated(value)));
 
   void downPayment(orderNumber, method) => homePageRepository

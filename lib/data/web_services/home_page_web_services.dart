@@ -7,12 +7,14 @@ import '../../constants/strings.dart';
 
 class HomePageWebServices {
   var headers;
-  var dio;
+  late Dio dio;
+  static final HomePageWebServices _instance = HomePageWebServices._();
 
-  HomePageWebServices(token) {
+  HomePageWebServices._() {
     dio = Dio();
-    headers = {'Accept-Language': 'en', 'Authorization': 'Bearer $token'};
   }
+
+  factory HomePageWebServices() => _instance;
 
   // Future<List<dynamic>>getAllSouqSliders(){
   //
@@ -57,7 +59,9 @@ class HomePageWebServices {
       Location location,
       mainService,
       description,
-      List<String> images) async {
+      List<String> images,
+      token) async {
+    headers = {'Accept-Language': 'en', 'Authorization': 'Bearer $token'};
     var data = {
       'answers': answers.map((e) => e.toJson()),
       'problemType': problemType.map((e) => e.toJson()),
@@ -67,7 +71,8 @@ class HomePageWebServices {
     };
     if (images.length != 0) data.addAll({'images': images});
 
-    var response = await dio.post(baseUrl + 'order', data = data);
+    var response = await dio.post(baseUrl + 'order',
+        data: data, options: Options(headers: headers));
     return response.data;
   }
 
@@ -79,14 +84,14 @@ class HomePageWebServices {
   Future<dynamic> downPayment(orderNumber, method) async {
     var data = {"paymentMethod": method};
     var response =
-        await dio.put(baseUrl + 'order/$orderNumber/down-payment', data = data);
+        await dio.put(baseUrl + 'order/$orderNumber/down-payment', data: data);
     return response.data['order'];
   }
 
   Future<dynamic> retry(orderNumber, date) async {
     var data = {'date': date};
     var response =
-        await dio.put(baseUrl + 'order/$orderNumber/retry', data = data);
+        await dio.put(baseUrl + 'order/$orderNumber/retry', data: data);
     return response.data;
   }
 
@@ -98,7 +103,7 @@ class HomePageWebServices {
   Future<dynamic> rate(orderNumber, rate, comment) async {
     var data = {'rate': rate, 'comment': comment};
     var response =
-        await dio.post(baseUrl + 'order/$orderNumber/rate', data = data);
+        await dio.post(baseUrl + 'order/$orderNumber/rate', data: data);
     return response;
   }
 
@@ -128,7 +133,7 @@ class HomePageWebServices {
       'title': title,
       'text': text
     };
-    Response response = await dio.post(baseUrl + 'forms-answer', data = data);
+    Response response = await dio.post(baseUrl + 'forms-answer', data: data);
     return response;
   }
 

@@ -35,6 +35,11 @@ class RegistrationRepository {
     return statuesCode == 200;
   }
 
+  Future<bool> sendCodeToUserEmail(String email) async {
+    var statuesCode = await _registrationOperations.sendCodeToUserEmail(email);
+    return statuesCode == 200;
+  }
+
   Future<int> confirmCode(phone, countryKey, code) async {
     var statCode =
         await _registrationOperations.confirmCode(phone, countryKey, code);

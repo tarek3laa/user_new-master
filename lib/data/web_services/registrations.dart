@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 
-
 import '../../constants/strings.dart';
 import '../models/user.dart';
 
@@ -41,8 +40,14 @@ class RegistrationOperations {
 
   Future<int?> sendCodeToUserPhone(String phone, countryKey) async {
     var data = {'phone': phone, 'country': countryKey};
-    Response<dynamic> response =
-        await dio.post(baseUrl + 'verifyPhone', data: data);
+    Response<dynamic> response;
+    try {
+      response = await dio.post(baseUrl + 'verifyPhone', data: data);
+    } on DioError catch (e) {
+      response = e.response!;
+      print(response.statusCode);
+      print(response.data);
+    }
     return response.statusCode;
   }
 
@@ -51,5 +56,27 @@ class RegistrationOperations {
     Response<dynamic> response =
         await dio.put(baseUrl + 'confirmPhoneCode', data: data);
     return response.statusCode;
+  }
+
+  Future<int?> sendCodeToUserEmail(String email) async {
+    var data = {'email': email, 'type': 'CLIENT'};
+    Response<dynamic> response =
+        await dio.post(baseUrl + 'forgetPassword', data: data);
+    return response.statusCode;
+  }
+
+  Future<int?> confirmEmailCode(email, code) async {
+    var data = {'email': email, 'code': code, 'type': 'CLIENT'};
+    Response<dynamic> response =
+        await dio.put(baseUrl + 'confirmationCode', data: data);
+    return response.statusCode;
+  }
+
+  Future<dynamic> changePassword(email, newPassword) async {
+    var data = {'email': email, 'newPassword': newPassword, 'type': 'CLIENT'};
+    Response<dynamic> response =
+        await dio.put(baseUrl + 'confirmationchange', data: data);
+
+    return response;
   }
 }

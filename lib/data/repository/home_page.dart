@@ -13,13 +13,16 @@ import '../models/order/order.dart';
 import '../models/slider.dart';
 
 class HomePageRepository {
-  final HomePageWebServices homePageWebServices;
+  final HomePageWebServices homePageWebServices = HomePageWebServices();
+  static final HomePageRepository _instance = HomePageRepository._();
 
-  HomePageRepository(this.homePageWebServices);
+  HomePageRepository._();
 
-  Future<List<Slider>> getAllSliders() async {
+  factory HomePageRepository() => _instance;
+
+  Future<List<HomePageSlider>> getAllSliders() async {
     var data = await homePageWebServices.getAllSliders();
-    return data.map((e) => Slider.fromJson(e)).toList();
+    return data.map((e) => HomePageSlider.fromJson(e)).toList();
   }
 
   Future<List<MainService>> getAllMainServices({city}) async {
@@ -44,9 +47,9 @@ class HomePageRepository {
   }
 
   Future<Order> createOrder(List<Answer> answers, List<ProblemType> problemType,
-      Location location, mainService, description, images) async {
-    var data = await homePageWebServices.createOrder(
-        answers, problemType, location, mainService, description, images);
+      Location location, mainService, description, images, token) async {
+    var data = await homePageWebServices.createOrder(answers, problemType,
+        location, mainService, description, images, token);
 
     Order order = Order.fromJson(data);
     order.problemType = await getProblemTypes(data['problemType'], this);

@@ -42,7 +42,7 @@ class DownPaymentSubmitted extends HomePageState {
 }
 
 class SliderLoaded extends HomePageState {
-  final List<Slider> sliders;
+  final List<HomePageSlider> sliders;
 
   SliderLoaded(this.sliders);
 }

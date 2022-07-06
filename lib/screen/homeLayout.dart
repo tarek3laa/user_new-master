@@ -5,44 +5,72 @@ import 'package:user_new/bloc/cubit.dart';
 import 'package:user_new/bloc/state.dart';
 import 'package:user_new/screen/homePage/drawerScreen.dart';
 
+import '../business_logic_component/home_page/home_page_cubit.dart';
+import '../data/models/services/main_services.dart';
+import '../data/models/slider.dart';
 import 'homePage/home.dart';
 import 'homePage/order.dart';
 import 'homePage/wallet.dart';
 
-class HomeLayout extends StatelessWidget {
+class HomeLayout extends StatefulWidget {
   final session;
 
-  const HomeLayout({Key? key, required this.session}) : super(key: key);
+  HomeLayout({Key? key, required this.session}) : super(key: key);
+
+  @override
+  State<HomeLayout> createState() => _HomeLayoutState();
+}
+
+class _HomeLayoutState extends State<HomeLayout> {
+  HomePageCubit homePageCubit = HomePageCubit();
+
+  @override
+  void initState() {
+    homePageCubit.getAllSliders();
+    homePageCubit.getAllMainServices();
+  }
+
+  List<HomePageSlider> sliders = [];
+  List<MainService> mainServices = [];
 
   @override
   Widget build(BuildContext context) {
-    print(session.token);
-    return BlocConsumer<AppCubit, AppState>(
-        builder: (context, state) {
-          AppCubit cubit = BlocProvider.of(context);
-          var scaffoldKey = GlobalKey<ScaffoldState>();
-          List<Widget> bodyScreen = [
-            WalletScreen(scaffoldKey: scaffoldKey),
-            OrderScreen(),
-            HomeScreen(scaffoldKey: scaffoldKey),
-            HomeScreen(scaffoldKey: scaffoldKey),
-            HomeScreen(scaffoldKey: scaffoldKey),
-          ];
+    print(widget.session.token);
+    return BlocConsumer<AppCubit, AppState>(builder: (context, state) {
+      AppCubit cubit = BlocProvider.of(context);
+      var scaffoldKey = GlobalKey<ScaffoldState>();
+      List<Widget> bodyScreen = [
+        WalletScreen(scaffoldKey: scaffoldKey),
+        OrderScreen(),
+        HomeScreen(scaffoldKey: scaffoldKey),
+        HomeScreen(scaffoldKey: scaffoldKey),
+        HomeScreen(scaffoldKey: scaffoldKey),
+      ];
 
-          return WillPopScope(
-            onWillPop: () async {
-              return false;
-            },
-            child: Scaffold(
-              key: scaffoldKey,
-              endDrawer: DrawerScreen(),
-              backgroundColor: Color(0xffF3F4F6),
-              bottomNavigationBar: buildBlocBuilderBottomNavBar(),
-              body: bodyScreen[cubit.indexBottomNavBar],
-            ),
-          );
+      return WillPopScope(
+        onWillPop: () async {
+          return false;
         },
-        listener: (context, state) {});
+        child: Scaffold(
+          key: scaffoldKey,
+          endDrawer: DrawerScreen(),
+          backgroundColor: Color(0xffF3F4F6),
+          bottomNavigationBar: buildBlocBuilderBottomNavBar(),
+          body: bodyScreen[cubit.indexBottomNavBar],
+        ),
+      );
+    }, listener: (context, state) {
+      if (state is DataStateChanged) {
+        var dataState = state.state;
+        if (dataState is SliderLoaded) {
+          sliders = dataState.sliders;
+        }
+        if (dataState is MainServicesLoaded) {
+          mainServices = dataState.mainServices;
+          print(mainServices[0].description);
+        }
+      }
+    });
   }
 
   // bottom Nav Bar

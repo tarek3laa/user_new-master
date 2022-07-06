@@ -3,18 +3,20 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:user_new/bloc/state.dart';
 import 'package:user_new/business_logic_component/country/country_cubit.dart';
+import 'package:user_new/business_logic_component/home_page/home_page_cubit.dart';
 import 'package:user_new/business_logic_component/registrtion/registration_cubit.dart';
-import 'package:user_new/screen/homePage/home.dart';
-import 'package:user_new/screen/homePage/order.dart';
-import 'package:user_new/screen/homePage/wallet.dart';
+
 
 class AppCubit extends Cubit<AppState> {
   final CountryCubit countryCubit;
   final RegistrationCubit registrationCubit;
+  final HomePageCubit homePageCubit;
   late final StreamSubscription countryStreamSubscription;
   late final StreamSubscription registrationStreamSubscription;
+  late final StreamSubscription homePageStreamSubscription;
 
-  AppCubit(this.countryCubit, this.registrationCubit) : super(InitialState()) {
+  AppCubit(this.countryCubit, this.registrationCubit, this.homePageCubit)
+      : super(InitialState()) {
     countryStreamSubscription =
         countryCubit.stream.listen((CountryState event) {
       if (event is CountryLoaded) {
@@ -23,6 +25,10 @@ class AppCubit extends Cubit<AppState> {
     });
 
     registrationStreamSubscription = registrationCubit.stream.listen((event) {
+      emit(DataStateChanged(event));
+    });
+
+    homePageStreamSubscription = homePageCubit.stream.listen((event) {
       emit(DataStateChanged(event));
     });
   }
@@ -90,6 +96,7 @@ class AppCubit extends Cubit<AppState> {
   Future<void> close() {
     countryStreamSubscription.cancel();
     registrationStreamSubscription.cancel();
+    homePageStreamSubscription.cancel();
     return super.close();
   }
 }

@@ -28,6 +28,10 @@ class RegistrationCubit extends Cubit<RegistrationState> {
       .sendCodeToUserPhone(phone, countryCode)
       .then((value) => (value) ? emit(CodeSent()) : emit(CodeSendingIssue()));
 
+  void sendCodeToUserEmail(String email) => _registrationRepository
+      .sendCodeToUserEmail(email)
+      .then((value) => (value) ? emit(CodeSent()) : emit(CodeSendingIssue()));
+
   void codeConfirmation(String phone, String countryKey, String code) =>
       _registrationRepository.confirmCode(phone, countryKey, code).then(
           (value) => (value == 200)

@@ -1,22 +1,16 @@
-import 'package:carousel_indicator/carousel_indicator.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
-import 'package:user_new/business_logic_component/home_page/home_page_cubit.dart';
 import 'package:user_new/constants/color.dart';
-import 'package:user_new/data/models/city.dart';
 import 'package:user_new/modelUi/carsoulUI.dart';
 import 'package:user_new/modelUi/mainService.dart';
-import 'package:user_new/screen/homePage/drawerScreen.dart';
 import 'package:getwidget/getwidget.dart';
 
 // الي فيها اختيار الخدمات
 class HomeScreen extends StatelessWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
-  final GlobalKey<ScaffoldState> scaffoldKey ;
+  HomeScreen({required this.scaffoldKey});
 
-   HomeScreen({required this.scaffoldKey}) ;
   final List<String> imageList = [
     "https://cdn.pixabay.com/photo/2017/12/03/18/04/christmas-balls-2995437_960_720.jpg",
     "https://cdn.pixabay.com/photo/2017/12/13/00/23/christmas-3015776_960_720.jpg",
@@ -25,17 +19,18 @@ class HomeScreen extends StatelessWidget {
     "https://cdn.pixabay.com/photo/2019/12/22/04/18/x-mas-4711785__340.jpg",
     "https://cdn.pixabay.com/photo/2016/11/22/07/09/spruce-1848543__340.jpg"
   ];
-   @override
+
+  @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-     print("$height");
+    print("$height");
     return SingleChildScrollView(
       child: Column(
         children: [
           Container(
-            width:width ,
-            height: height*(90/height),
+            width: width,
+            height: height * (90 / height),
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -49,60 +44,70 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Container(
                           margin: EdgeInsets.only(right: 7),
-                          child: Image.asset("images/notification.png",width: 25,height: 25,)),
+                          child: Image.asset(
+                            "images/notification.png",
+                            width: 25,
+                            height: 25,
+                          )),
 
                       //todo text notification Number
-                      CircleAvatar(radius: 9,backgroundColor: colorYellow,child: Text(
-                        '4',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 12,
-                          color: const Color(0xff182061),
-                          height: 1.8333333333333333,
+                      CircleAvatar(
+                        radius: 9,
+                        backgroundColor: colorYellow,
+                        child: Text(
+                          '4',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 12,
+                            color: const Color(0xff182061),
+                            height: 1.8333333333333333,
+                          ),
+                          textHeightBehavior: TextHeightBehavior(
+                              applyHeightToFirstAscent: false),
+                          softWrap: false,
                         ),
-                        textHeightBehavior: TextHeightBehavior(applyHeightToFirstAscent: false),
-                        softWrap: false,
-                      ),)
-
+                      )
                     ],
                   ),
                 ),
                 // search on service
                 Container(
                   alignment: Alignment.centerRight,
-                  width: width*(259/width),
-                  height: height*(39/height),
-                  padding: EdgeInsets.only(bottom: 5,right: 10),
-
+                  width: width * (259 / width),
+                  height: height * (39 / height),
+                  padding: EdgeInsets.only(bottom: 5, right: 10),
                   child: Directionality(
                     textDirection: TextDirection.rtl,
                     child: TextFormField(
-                      style: TextStyle(fontSize: 20,color: colorYellow),
+                      style: TextStyle(fontSize: 20, color: colorYellow),
                       cursorColor: colorBlue,
                       decoration: InputDecoration(
-                        hintText: "ابحث باسم الخدمة",
-                         hintStyle: TextStyle(
-                           fontSize: 12,
-                           color: const Color(0xff9194b7),
-                           height: 0.8947368421052632,
-                         ),
-                        border: InputBorder.none
-                      ),
+                          hintText: "ابحث باسم الخدمة",
+                          hintStyle: TextStyle(
+                            fontSize: 12,
+                            color: const Color(0xff9194b7),
+                            height: 0.8947368421052632,
+                          ),
+                          border: InputBorder.none),
                     ),
                   ),
                   color: const Color(0x45000000),
                 ),
-              // Drawer
-              Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                child: InkWell(
-                    onTap: (){
-                      scaffoldKey.currentState!.openEndDrawer();
-                    },
-                    child: Image.asset("images/Icon_menu.png",width: 25,height: 25,)),
-              ),
-
-            ],),
+                // Drawer
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: InkWell(
+                      onTap: () {
+                        scaffoldKey.currentState!.openEndDrawer();
+                      },
+                      child: Image.asset(
+                        "images/Icon_menu.png",
+                        width: 25,
+                        height: 25,
+                      )),
+                ),
+              ],
+            ),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment(-0.955, -0.013),
@@ -118,7 +123,9 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 // location & change Location
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,27 +136,37 @@ class HomeScreen extends StatelessWidget {
                         fontSize: 18,
                         color: const Color(0xff182061),
                       ),
-                      textHeightBehavior: TextHeightBehavior(applyHeightToFirstAscent: false),
+                      textHeightBehavior:
+                          TextHeightBehavior(applyHeightToFirstAscent: false),
                       textAlign: TextAlign.center,
                       softWrap: false,
                     ),
-                  Row(children: [
-                    // text for location
-                    Text(
-                      'المنزل',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: const Color(0xff182061),
-                      ),
-                      textHeightBehavior: TextHeightBehavior(applyHeightToFirstAscent: false),
-                      textAlign: TextAlign.center,
-                      softWrap: false,
+                    Row(
+                      children: [
+                        // text for location
+                        Text(
+                          'المنزل',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: const Color(0xff182061),
+                          ),
+                          textHeightBehavior: TextHeightBehavior(
+                              applyHeightToFirstAscent: false),
+                          textAlign: TextAlign.center,
+                          softWrap: false,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Image.asset(
+                          "images/map pin.png",
+                          width: 13,
+                          height: 20,
+                        ),
+                      ],
                     ),
-                    SizedBox(width: 5,),
-                    Image.asset("images/map pin.png",width: 13,height: 20,),
-                  ],),
-
-                ],),
+                  ],
+                ),
                 // text location Details
                 Text(
                   'ميدان سفينكس , المعادي , القاهرة , مصر',
@@ -157,12 +174,15 @@ class HomeScreen extends StatelessWidget {
                     fontSize: 15,
                     color: const Color(0xff737895),
                   ),
-                  textHeightBehavior: TextHeightBehavior(applyHeightToFirstAscent: false),
+                  textHeightBehavior:
+                      TextHeightBehavior(applyHeightToFirstAscent: false),
                   textAlign: TextAlign.center,
                   softWrap: false,
                 ),
 
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 // اعلانات السوق
                 ImageSlideshow(
                   width: double.infinity,
@@ -179,14 +199,13 @@ class HomeScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(2),
                           color: Colors.yellow[300],
-
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Container(
-                              width: width*(107/width),
-                              height: height*(34/height),
+                              width: width * (107 / width),
+                              height: height * (34 / height),
                               child: Center(
                                 child: Text(
                                   'تسوق الآن',
@@ -195,7 +214,8 @@ class HomeScreen extends StatelessWidget {
                                     color: const Color(0xffffffff),
                                     height: 1.0416666666666667,
                                   ),
-                                  textHeightBehavior: TextHeightBehavior(applyHeightToFirstAscent: false),
+                                  textHeightBehavior: TextHeightBehavior(
+                                      applyHeightToFirstAscent: false),
                                   textAlign: TextAlign.center,
                                   softWrap: false,
                                 ),
@@ -204,19 +224,24 @@ class HomeScreen extends StatelessWidget {
                                 gradient: LinearGradient(
                                   begin: Alignment(0.0, -1.0),
                                   end: Alignment(0.0, 1.0),
-                                  colors: [const Color(0xff182061), const Color(0xff16267d)],
+                                  colors: [
+                                    const Color(0xff182061),
+                                    const Color(0xff16267d)
+                                  ],
                                   stops: [0.0, 1.0],
                                 ),
                                 borderRadius: BorderRadius.circular(4.0),
                               ),
                             ),
-                            Image.asset(e.Image,width: 80,height: 80,)
-
-
-                        ],),
+                            Image.asset(
+                              e.Image,
+                              width: 80,
+                              height: 80,
+                            )
+                          ],
+                        ),
                       );
                     }).toList()
-
                   ],
                   onPageChanged: (value) {
                     print('Page changed: $value');
@@ -224,64 +249,71 @@ class HomeScreen extends StatelessWidget {
                   autoPlayInterval: 3000,
                   isLoop: true,
                 ),
-               SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 // اعلانات
                 GFItemsCarousel(
-              itemHeight: 108,
-              rowCount: 2,
-              children:
-              //todo list name is SlideImageList
-              SlideImageList.map((e) {
-                return Container(
-                  margin: EdgeInsets.only(right: 10),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(e.Image),
-                        fit: BoxFit.fill
-                    ),
-                  ),
-                  width: width*(165/width),height: height*(108/height),);
-
-              }).toList()
-          ),
-
+                    itemHeight: 108,
+                    rowCount: 2,
+                    children:
+                        //todo list name is SlideImageList
+                        SlideImageList.map((e) {
+                      return Container(
+                        margin: EdgeInsets.only(right: 10),
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(e.Image), fit: BoxFit.fill),
+                        ),
+                        width: width * (165 / width),
+                        height: height * (108 / height),
+                      );
+                    }).toList()),
 
                 // GridView => MainService
                 GridView.count(
-                  physics: NeverScrollableScrollPhysics(), // to disable GridView's scrolling
+                  physics: NeverScrollableScrollPhysics(),
+                  // to disable GridView's scrolling
                   shrinkWrap: true,
-                  crossAxisCount: 3,mainAxisSpacing: 5,childAspectRatio: 1,crossAxisSpacing: 5,children: [
-                  ...mainServiceUIList.map((e){
-                    return  Container(
-                     height: 108,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                        Image.asset("${e.image}",width: 50,height: 32,),
-                        SizedBox(height: 5,),
-                        Text(e.name)
-                      ],),
-                      decoration: BoxDecoration(
-                        color: const Color(0xffffffff),
-                        borderRadius: BorderRadius.circular(4.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0x0f000000),
-                            offset: Offset(0, 0),
-                            blurRadius: 10,
-                          ),
-                        ],
-                      ),
-                    );
-                  })
-
-                ],),
-
-
-
-
-
-            ],),
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 5,
+                  childAspectRatio: 1,
+                  crossAxisSpacing: 5,
+                  children: [
+                    ...mainServiceUIList.map((e) {
+                      return Container(
+                        height: 108,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "${e.image}",
+                              width: 50,
+                              height: 32,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(e.name)
+                          ],
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xffffffff),
+                          borderRadius: BorderRadius.circular(4.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0x0f000000),
+                              offset: Offset(0, 0),
+                              blurRadius: 10,
+                            ),
+                          ],
+                        ),
+                      );
+                    })
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
